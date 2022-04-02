@@ -15,6 +15,6 @@ public class ThreadSleep {
                 }
         );
         thread.start();
-       // System.out.println("Main");
+        System.out.println("Main");
     }
 }
