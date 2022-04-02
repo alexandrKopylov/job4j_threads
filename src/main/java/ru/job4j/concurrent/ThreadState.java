@@ -11,13 +11,11 @@ public class ThreadState {
         );
         first.start();
         second.start();
-        boolean bool = true;
-        while (bool) {
-            if (first.getState() == Thread.State.TERMINATED
-                    &&  second.getState() == Thread.State.TERMINATED) {
-                bool = false;
-            }
+
+        while (first.getState() == Thread.State.TERMINATED
+                && second.getState() == Thread.State.TERMINATED) {
+            System.out.println("Work finish");
         }
-        System.out.println("Work finish");
+
     }
 }
