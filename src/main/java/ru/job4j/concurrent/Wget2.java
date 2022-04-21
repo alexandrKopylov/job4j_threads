@@ -48,9 +48,6 @@ public class Wget2 implements Runnable {
             long diff;
 
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                if (downloadData == 0) {
-                    start = System.currentTimeMillis();
-                }
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 downloadData += bytesRead;
                 if (downloadData > (speed * MB)) {
@@ -59,6 +56,7 @@ public class Wget2 implements Runnable {
                         Thread.sleep(1000 - diff);
                     }
                     downloadData = 0;
+                    start = System.currentTimeMillis();
                 }
             }
         } catch (IOException | InterruptedException e) {
