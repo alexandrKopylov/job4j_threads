@@ -44,8 +44,8 @@ public class Wget2 implements Runnable {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             int downloadData = 0;
-            long start = 0;
             long diff;
+            long start = System.currentTimeMillis();
 
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
