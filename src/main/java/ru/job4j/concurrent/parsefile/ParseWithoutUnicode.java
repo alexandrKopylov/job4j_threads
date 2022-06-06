@@ -4,7 +4,7 @@ import java.io.File;
 
 public class ParseWithoutUnicode implements Parsing {
     private final File file;
-    ParseContent parseContent = new ParseContent();
+    private ParseContent parseContent = new ParseContent();
 
     public ParseWithoutUnicode(File file) {
         this.file = file;

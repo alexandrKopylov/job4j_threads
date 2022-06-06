@@ -4,7 +4,7 @@ import java.io.File;
 
 public class Parser {
 
-    Parsing strategy;
+    private Parsing strategy;
     private final File file;
 
     public Parser(File file) {
