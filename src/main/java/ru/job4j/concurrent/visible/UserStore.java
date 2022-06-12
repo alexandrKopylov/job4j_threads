@@ -1,90 +1,53 @@
 package ru.job4j.concurrent.visible;
 
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @ThreadSafe
 public class UserStore {
 
-    private List<User> list;
+    private final Map<Integer, User> map;
 
     public UserStore() {
-        this.list = new ArrayList<>();
+        this.map = new HashMap<>();
     }
 
     public boolean add(User user) {
-        return list.add(user);
+        boolean flag = false;
+        User tmp = map.putIfAbsent(user.getId(), user);
+        if (tmp == null) {
+            flag = true;
+        }
+        return flag;
     }
 
-    public boolean update(User user) {
-        return false;
+    public synchronized boolean update(User user) {
+        boolean flag = map.containsKey(user.getId());
+        if (flag) {
+            map.replace(user.getId(), user);
+        }
+        return flag;
+    }
+
+    public int getUserAmount(int id) {
+        return map.get(id).getAmount();
     }
 
     public boolean delete(User user) {
-        return list.remove(user);
+        return map.remove(user.getId(), user);
     }
 
     public synchronized void transfer(int fromId, int toId, int amount) {
-        User[] users = find2User(fromId, toId);
-        users[0].setAmount(users[0].getAmount() - amount);
-        users[1].setAmount(users[1].getAmount() + amount);
-    }
-
-    private synchronized User[] find2User(int fromId, int toId) {
-
-        User[] users = new User[2];
-        boolean boolFrom = true;
-        boolean boolTo = true;
-
-        for (User user : list) {
-            if (boolFrom) {
-                if (user.getId() == fromId) {
-                   users[0] = user;
-                    boolFrom = false;
-                    continue;
-                }
-            }
-
-            if (boolTo) {
-                if (user.getId() == toId) {
-                    users[1] = user;
-                    boolTo = false;
-                }
-            }
-            if (!boolFrom && !boolTo) {
-                break;
-            }
+        User fromUser = map.get(fromId);
+        User toUser = map.get(toId);
+        if (fromUser == null || toUser == null) {
+            throw new IllegalStateException("no user with id =" + fromId + "or id =" + toId);
         }
-        return users;
-    }
-
-
-    public void size() {
-        System.out.println(list.size());
-    }
-
-    public void print() {
-        for (User user : list) {
-            System.out.println(user);
+        if (fromUser.getAmount() < amount) {
+            throw new IllegalArgumentException("the sender doesn't have enough money");
         }
-    }
-
-    public static void main(String[] args) {
-        UserStore store = new UserStore();
-
-        store.add(new User(1, 100));
-        store.add(new User(2, 200));
-        store.add(new User(3, 200));
-        store.add(new User(4, 200));
-        store.add(new User(5, 200));
-
-        store.print();
-        store.transfer(1, 2, 50);
-
-        System.out.println("======");
-        store.print();
+        update(new User(fromId, fromUser.getAmount() - amount));
+        update(new User(toId, toUser.getAmount() + amount));
     }
 }

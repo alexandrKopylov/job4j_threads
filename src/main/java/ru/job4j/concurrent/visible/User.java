@@ -3,8 +3,8 @@ package ru.job4j.concurrent.visible;
 import net.jcip.annotations.GuardedBy;
 
 public class User {
-    private int id;
-    private int amount;
+    private final int id;
+    private final int amount;
 
     public User(int id, int amount) {
         this.id = id;
@@ -14,17 +14,8 @@ public class User {
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public synchronized int getAmount() {
         return amount;
-    }
-
-    public synchronized void setAmount(int amount) {
-        this.amount = amount;
     }
 
     @Override
