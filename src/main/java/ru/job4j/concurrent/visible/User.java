@@ -1,7 +1,5 @@
 package ru.job4j.concurrent.visible;
 
-import net.jcip.annotations.GuardedBy;
-
 public class User {
     private final int id;
     private final int amount;
@@ -14,6 +12,7 @@ public class User {
     public int getId() {
         return id;
     }
+
     public synchronized int getAmount() {
         return amount;
     }
@@ -21,7 +20,7 @@ public class User {
     @Override
     public String toString() {
         return "User{"
-                +  "id=" + id
-                +  ", amount=" + amount + '}';
+                + "id=" + id
+                + ", amount=" + amount + '}';
     }
 }
