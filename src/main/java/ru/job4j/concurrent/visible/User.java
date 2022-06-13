@@ -2,7 +2,7 @@ package ru.job4j.concurrent.visible;
 
 public class User {
     private final int id;
-    private final int amount;
+    private int amount;
 
     public User(int id, int amount) {
         this.id = id;
@@ -13,8 +13,12 @@ public class User {
         return id;
     }
 
-    public synchronized int getAmount() {
+    public int getAmount() {
         return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Override
