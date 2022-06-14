@@ -33,14 +33,15 @@ public class UserStore {
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         User fromUser = map.get(fromId);
         User toUser = map.get(toId);
-
+        boolean flag;
         if (fromUser == null || toUser == null || fromUser.getAmount() < amount) {
             System.out.println("bad parameters");
-          return false;
+            flag = false;
+        } else {
+            fromUser.setAmount(fromUser.getAmount() - amount);
+            toUser.setAmount(toUser.getAmount() + amount);
+            flag = true;
         }
-
-        fromUser.setAmount(fromUser.getAmount() - amount);
-        toUser.setAmount(toUser.getAmount() + amount);
-        return true;
+        return flag;
     }
 }
