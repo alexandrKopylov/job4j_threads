@@ -66,7 +66,7 @@ public class Wget2 implements Runnable {
     }
 
     /**
-     * @param args 1) url                  example :  https://proof.ovh.net/files/10Mb.dat
+     * @param args 1) url                  example :  https:/proof.ovh.net/files/10Mb.dat
      *             2) Speed downloading    example : 1 = 1Mb/s,  5 = 5 Mb/s
      * @throws InterruptedException
      */
