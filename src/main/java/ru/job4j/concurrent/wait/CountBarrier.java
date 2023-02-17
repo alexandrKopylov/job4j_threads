@@ -1,5 +1,7 @@
 package ru.job4j.concurrent.wait;
 
+
+
 import java.util.LinkedList;
 import java.util.List;
 
