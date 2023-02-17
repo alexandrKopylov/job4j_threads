@@ -7,12 +7,12 @@ public class ConcurrentOutput {
         );
         another.start();
 
-        Thread second  = new Thread(
+        Thread second = new Thread(
                 () -> System.out.println(Thread.currentThread().getName())
         );
         second.start();
 
-        Thread  third  = new Thread(
+        Thread third = new Thread(
                 () -> System.out.println(Thread.currentThread().getName())
         );
         third.start();
