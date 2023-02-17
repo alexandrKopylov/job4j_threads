@@ -1,17 +1,19 @@
 package ru.job4j.concurrent.wait;
 
-
-
 import java.util.LinkedList;
 import java.util.List;
 
-public class CountBarrier {
+public class CounBarrier {
     private final Object monitor = this;
     private final int total;
     private int count = 0;
 
-    public CountBarrier(final int total) {
+    public CounBarrier(final int total) {
         this.total = total;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public void count() {
@@ -41,7 +43,7 @@ public class CountBarrier {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        CountBarrier cb = new CountBarrier(3);
+        CounBarrier cb = new CounBarrier(3);
         Thread first = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
@@ -75,14 +77,8 @@ public class CountBarrier {
         threads.add(third);
         threads.add(fourth);
         threads.forEach(Thread::start);
-
         Thread.sleep(3000);
         System.out.println(cb.count);
-
         System.out.println(first.getState());
-
-
     }
-
-
 }
