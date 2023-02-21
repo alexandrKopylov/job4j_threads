@@ -17,7 +17,7 @@ public class CounBarrier {
         synchronized (monitor) {
             count++;
             monitor.notifyAll();
-            // await();
+
         }
     }
 
