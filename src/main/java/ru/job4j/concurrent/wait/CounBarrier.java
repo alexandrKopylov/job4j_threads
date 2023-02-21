@@ -17,15 +17,13 @@ public class CounBarrier {
         synchronized (monitor) {
             count++;
             monitor.notifyAll();
-
         }
     }
 
 
     public void await() {
-        count();
         synchronized (monitor) {
-            while (count <= total) {
+            while (count < total) {
                 try {
                     monitor.wait();
                 } catch (InterruptedException e) {
@@ -41,12 +39,14 @@ public class CounBarrier {
         Thread first = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
+                    cb.count();
                     cb.await();
                     System.out.println(Thread.currentThread().getName() + "  print 11 ");
                 }, "first");
         Thread second = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
+                    cb.count();
                     cb.await();
                     System.out.println(Thread.currentThread().getName() + "  print 22 ");
                 }, "second");
@@ -54,6 +54,7 @@ public class CounBarrier {
         Thread third = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
+                    cb.count();
                     cb.await();
                     System.out.println(Thread.currentThread().getName() + "  print 33 ");
                 }, "third");
@@ -61,6 +62,7 @@ public class CounBarrier {
         Thread fourth = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
+                    cb.count();
                     cb.await();
                     System.out.println(Thread.currentThread().getName() + "  print 44 ");
                 }, "fourth");
