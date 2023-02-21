@@ -1,8 +1,5 @@
 package ru.job4j.concurrent.wait;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class CounBarrier {
     private final Object monitor = this;
     private final int total;
@@ -20,19 +17,15 @@ public class CounBarrier {
         synchronized (monitor) {
             count++;
             monitor.notifyAll();
-            await();
+            // await();
         }
     }
 
-    public void wakeUp() {
-        synchronized (monitor) {
-            monitor.notifyAll();
-        }
-    }
 
     public void await() {
+        count();
         synchronized (monitor) {
-            while (count >= total) {
+            while (count <= total) {
                 try {
                     monitor.wait();
                 } catch (InterruptedException e) {
@@ -40,6 +33,7 @@ public class CounBarrier {
                 }
             }
         }
+
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -47,38 +41,45 @@ public class CounBarrier {
         Thread first = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
-                    cb.count();
-                    System.out.println(Thread.currentThread().getName() + " want to print 11 ");
+                    cb.await();
+                    System.out.println(Thread.currentThread().getName() + "  print 11 ");
                 }, "first");
         Thread second = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
-                    cb.count();
-                    System.out.println(Thread.currentThread().getName() + " want to print 22 ");
+                    cb.await();
+                    System.out.println(Thread.currentThread().getName() + "  print 22 ");
                 }, "second");
 
         Thread third = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
-                    cb.count();
-                    System.out.println(Thread.currentThread().getName() + " want to print 33 ");
+                    cb.await();
+                    System.out.println(Thread.currentThread().getName() + "  print 33 ");
                 }, "third");
 
         Thread fourth = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
-                    cb.count();
-                    System.out.println(Thread.currentThread().getName() + " want to print 44 ");
+                    cb.await();
+                    System.out.println(Thread.currentThread().getName() + "  print 44 ");
                 }, "fourth");
 
-        List<Thread> threads = new LinkedList<>();
-        threads.add(first);
-        threads.add(second);
-        threads.add(third);
-        threads.add(fourth);
-        threads.forEach(Thread::start);
-        Thread.sleep(3000);
+        first.start();
+        Thread.sleep(2000);
+
+        second.start();
+        Thread.sleep(2000);
+
+        third.start();
+        Thread.sleep(2000);
+
+        fourth.start();
+
         System.out.println(cb.count);
         System.out.println(first.getState());
+        System.out.println(second.getState());
+        System.out.println(third.getState());
+        System.out.println(fourth.getState());
     }
 }
