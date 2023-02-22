@@ -1,6 +1,7 @@
 package ru.job4j.concurrent.wait;
 
 import org.junit.Test;
+
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,13 +12,21 @@ public class SimpleBlockingQueueTest {
 
     @Test
     public void when1consumer1produser() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
         final int[] rsl = new int[1];
         Thread producer = new Thread(() -> {
-            queue.offer(1);
+            try {
+                queue.offer(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
         Thread consumer = new Thread(() -> {
-            rsl[0] = queue.poll();
+            try {
+                rsl[0] = queue.poll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
         producer.start();
         producer.join();
@@ -29,9 +38,13 @@ public class SimpleBlockingQueueTest {
 
     @Test
     public void when1producer() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
         Thread producer = new Thread(() -> {
-            queue.offer(8);
+            try {
+                queue.offer(8);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
         producer.start();
         producer.join();

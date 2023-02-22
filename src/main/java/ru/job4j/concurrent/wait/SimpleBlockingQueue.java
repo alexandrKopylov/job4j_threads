@@ -10,21 +10,28 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
-    private Queue<T> queue = new LinkedList<>();
+    final private Queue<T> queue;
+    final private int capacity;
 
-    public synchronized void offer(T value) {
-        queue.add(value);
+    public SimpleBlockingQueue(int capacity) {
+        this.capacity = capacity;
+        queue = new LinkedList<>();
+    }
+
+    public synchronized void offer(T value) throws InterruptedException {
+        while (queue.size() == capacity) {
+            wait();
+        }
+        queue.offer(value);
         notify();
     }
 
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException {
         while (queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            wait();
         }
-        return queue.poll();
+        T result = queue.poll();
+        notify();
+        return result;
     }
 }
