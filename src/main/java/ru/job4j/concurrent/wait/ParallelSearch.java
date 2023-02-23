@@ -37,9 +37,7 @@ public class ParallelSearch {
         );
         prod.start();
         prod.join();
-        while (consumer.getState() != Thread.State.WAITING) {
-            Thread.sleep(500);
-        }
+
         consumer.interrupt();
         System.out.println("consumer " + consumer.getState());
         System.out.println("prod " + prod.getState());
