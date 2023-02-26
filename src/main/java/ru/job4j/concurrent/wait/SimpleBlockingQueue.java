@@ -34,4 +34,8 @@ public class SimpleBlockingQueue<T> {
         notify();
         return result;
     }
+
+    public boolean isEmpty() {
+       return queue.isEmpty();
+    }
 }
